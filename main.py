@@ -1,6 +1,7 @@
 #!/usr/bin/python
 """
 Move a wireframe shape with arrow keys + "n" and "m"
+Reset shape with "r"
 
 Most math from Gustavo Niemeyer
 """
@@ -91,13 +92,13 @@ def main():
         if keys[pygame.K_LEFT]:
             rotate_object(cube, -0.1, (0,1,0))
         if keys[pygame.K_UP]:
-            rotate_object(cube, 0.1, (0,0,1))
-        if keys[pygame.K_DOWN]:
-            rotate_object(cube, -0.1, (0,0,1))
-        if keys[pygame.K_n]:
             rotate_object(cube, 0.1, (1,0,0))
-        if keys[pygame.K_m]:
+        if keys[pygame.K_DOWN]:
             rotate_object(cube, -0.1, (1,0,0))
+        if keys[pygame.K_n]:
+            rotate_object(cube, 0.1, (0,0,1))
+        if keys[pygame.K_m]:
+            rotate_object(cube, -0.1, (0,0,1))
         if keys[pygame.K_r]: # Reset the cube positions
             cube = [(0,0,0),  (50,50,50),  (50,-50,50),  (-50,-50,50),
             (-50,50,-50), (50,50,-50), (50,-50,-50), (-50,-50,-50)]
