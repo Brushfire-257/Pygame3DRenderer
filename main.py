@@ -55,18 +55,21 @@ def rotate_3dpoint(p, angle, axis, camera_pos):
     y -= cy
     z -= cz
 
+    cosAngle = cos(angle)
+    sinAngle = sin(angle)
+
     # Apply rotation based on camera orientation
     if axis == (1, 0, 0):  # Rotate around X-axis
-        new_y = y * cos(angle) - z * sin(angle)
-        new_z = y * sin(angle) + z * cos(angle)
+        new_y = y * cosAngle - z * sinAngle
+        new_z = y * sinAngle + z * cosAngle
         y, z = new_y, new_z
     elif axis == (0, 1, 0):  # Rotate around Y-axis
-        new_x = x * cos(angle) + z * sin(angle)
-        new_z = -x * sin(angle) + z * cos(angle)
+        new_x = x * cosAngle + z * sinAngle
+        new_z = -x * sinAngle + z * cosAngle
         x, z = new_x, new_z
     elif axis == (0, 0, 1):  # Rotate around Z-axis
-        new_x = x * cos(angle) - y * sin(angle)
-        new_y = x * sin(angle) + y * cos(angle)
+        new_x = x * cosAngle - y * sinAngle
+        new_y = x * sinAngle + y * cosAngle
         x, y = new_x, new_y
 
     # Translate point back relative to camera position
