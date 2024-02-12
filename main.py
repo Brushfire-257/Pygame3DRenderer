@@ -21,11 +21,14 @@ CAMERA_Z = 0
 
 def draw_3dline(surface, color, a, b, camera_distance): 
     """Convert 3D coordinates to 2D with perspective projection and draw line."""
-    ax = (a[0] - CAMERA_X) / (1 - (a[2] - CAMERA_Z) / camera_distance) + surface.get_width() / 2
-    ay = (a[1] - CAMERA_Y) / (1 - (a[2] - CAMERA_Z) / camera_distance) + surface.get_height() / 2
-    bx = (b[0] - CAMERA_X) / (1 - (b[2] - CAMERA_Z) / camera_distance) + surface.get_width() / 2
-    by = (b[1] - CAMERA_Y) / (1 - (b[2] - CAMERA_Z) / camera_distance) + surface.get_height() / 2
-    pygame.draw.line(surface, color, (ax, ay), (bx, by))
+    try:
+        ax = (a[0] - CAMERA_X) / (1 - (a[2] - CAMERA_Z) / camera_distance) + surface.get_width() / 2
+        ay = (a[1] - CAMERA_Y) / (1 - (a[2] - CAMERA_Z) / camera_distance) + surface.get_height() / 2
+        bx = (b[0] - CAMERA_X) / (1 - (b[2] - CAMERA_Z) / camera_distance) + surface.get_width() / 2
+        by = (b[1] - CAMERA_Y) / (1 - (b[2] - CAMERA_Z) / camera_distance) + surface.get_height() / 2
+        pygame.draw.line(surface, color, (ax, ay), (bx, by))
+    except Exception:
+        pass
 
 def draw_shape(surface, color, shape):
     """Draw 3D shape."""
@@ -86,13 +89,13 @@ def rotate_object(obj, angle, axis):
         obj[i] = rotate_3dpoint(obj[i], angle, axis, (CAMERA_X, CAMERA_Y, CAMERA_Z))
 
 def main():
-    global ORIGINX, ORIGINY, CAMERA_X, CAMERA_Y, CAMERA_Z
+    global ORIGINX, ORIGINY, CAMERA_X, CAMERA_Y, CAMERA_Z, CAMERA_FOCAL_DISTANCE
     pygame.init()
     screen = pygame.display.set_mode((640,400))
     # Move origin to center of screen
     ORIGINX = screen.get_width()/2
     ORIGINY = screen.get_height()/2
-    shape = [(0,0,0),  (50,50,50),  (50,-50,50),  (-50,-50,50),
+    shape = [(-50,50,50),  (50,50,50),  (50,-50,50),  (-50,-50,50),
             (-50,50,-50), (50,50,-50), (50,-50,-50), (-50,-50,-50)]
     while 1:
         draw_shape(screen, (255, 255, 255), shape)
@@ -105,17 +108,17 @@ def main():
         
         keys = pygame.key.get_pressed()
         if keys[pygame.K_d]:
-            CAMERA_X += 2
+            CAMERA_X += 3
         if keys[pygame.K_a]:
-            CAMERA_X -= 2
+            CAMERA_X -= 3
         if keys[pygame.K_w]:
-            CAMERA_Y -= 2 # Y is inverted...
+            CAMERA_Y -= 3 # Y is inverted...
         if keys[pygame.K_s]:
-            CAMERA_Y += 2
+            CAMERA_Y += 3
         if keys[pygame.K_e]:
-            CAMERA_Z += 2
+            CAMERA_Z += 3
         if keys[pygame.K_q]:
-            CAMERA_Z -= 2
+            CAMERA_Z -= 3
         if keys[pygame.K_n]:
             rotate_object(shape, 0.1, (0,0,1))
         if keys[pygame.K_m]:
@@ -128,8 +131,12 @@ def main():
             rotate_object(shape, 0.1, (1,0,0))
         if keys[pygame.K_DOWN]:
             rotate_object(shape, -0.1, (1,0,0))
+        if keys[pygame.K_u]:
+            CAMERA_FOCAL_DISTANCE += 3
+        if keys[pygame.K_j]:
+            CAMERA_FOCAL_DISTANCE -= 3
         if keys[pygame.K_r]: # Reset the shape positions
-            shape = [(0,0,0),  (50,50,50),  (50,-50,50),  (-50,-50,50),
+            shape = [(-50,50,50),  (50,50,50),  (50,-50,50),  (-50,-50,50),
             (-50,50,-50), (50,50,-50), (50,-50,-50), (-50,-50,-50)]
             CAMERA_X = 0
             CAMERA_Y = 0
