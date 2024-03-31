@@ -34,6 +34,15 @@ def draw_3dline(surface, color, a, b, camera_focal_distance):
             pygame.draw.line(surface, color, (ax, ay), (bx, by))
         except ZeroDivisionError:
             pass
+    else:
+        try: # If distance is 0 then dont run it (Dont divide by 0)
+            ax = (a[0] - CAMERA_X) / (1 - (a[2] - CAMERA_Z) / camera_focal_distance) + surface.get_width() / 2
+            ay = (a[1] - CAMERA_Y) / (1 - (a[2] - CAMERA_Z) / camera_focal_distance) + (surface.get_height() / 2)
+            bx = (b[0] - CAMERA_X) / (1 - (b[2] - CAMERA_Z) / camera_focal_distance) + surface.get_width() / 2
+            by = (b[1] - CAMERA_Y) / (1 - (b[2] - CAMERA_Z) / camera_focal_distance) + (surface.get_height() / 2)
+            pygame.draw.line(surface, color, (ax, ay), (bx, by))
+        except ZeroDivisionError:
+            pass
 
 def draw_shape(surface, color, shape):
     """Draw 3D shape."""
